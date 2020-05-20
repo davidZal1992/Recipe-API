@@ -3,12 +3,15 @@ DROP PROCEDURE IF EXISTS dbo.insertUser;
 GO  
 CREATE procedure [dbo].[insertUser]  
 (  
-@username varchar(50),  
-@email varchar(50),  
-@password varchar(50),
-@hobbies nvarchar(max)    
+@username varchar(10),
+@firstname varchar(4000), 
+@lastname varchar(4000), 
+@country varchar(50),  
+@password varchar(MAX),    
+@email varchar(4000),
+@url varchar(MAX)    
 )  
 AS  
 BEGIN  
-insert into users (username,email,password,hobbies) values( @username, @email, @password,@hobbies)  
+insert into users (username,firstname,lastname,country,password,email,url) values( @username,@firstname,@lastname,@country,@password,@email,@url)  
 END  
