@@ -1,10 +1,10 @@
 const { poolPromise } = require('../config/db')  
-const sql = require('mssql')  
+ 
 
 module.exports = async (req,res,next) => {
 //Check if seassion exists
-if(!(req.session && req.session.userId)){
 
+if(!(req.session && req.session.userId)){
     return res.status(401).json({msg: 'No session, authorization denied'});
 }
 
@@ -24,7 +24,7 @@ if(!(req.session && req.session.userId)){
      req.user = req.session.userId;
      //Access user variable in any html templates
      res.locals.user = user;
-
+     
      next();
     });  
 }
