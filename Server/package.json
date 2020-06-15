@@ -30,8 +30,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start":"node index.js",
-    "server": "nodemon index.js",
-    "client": "cd ../ && cd client && npm run serve",
+    "server": "cd ../ && cd Server && nodemon index.js",
+    "client": "npm run serve",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "David Zaltsman & Matan Gadasi",

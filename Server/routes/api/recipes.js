@@ -192,7 +192,7 @@ router.get('/random', async function(req,res,next){
 router.get("/search", auth, async function(req,res,next) {
   try {
     const { query, cuisine, diet, intolerances, number } = req.query;
-
+    
     const search_response = await axios.get(`${api_domain}/search`, {
     params: {
         cuisine: cuisine,
@@ -204,7 +204,7 @@ router.get("/search", auth, async function(req,res,next) {
         apiKey: process.env.spooncular_API
       }
     });
-
+    
     let recipes = await Promise.all(
     search_response.data.results.map((recipe_raw) =>
     recipes_actions.getRecipeInfo(recipe_raw.id)
