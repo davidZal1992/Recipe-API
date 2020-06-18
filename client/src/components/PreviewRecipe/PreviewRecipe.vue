@@ -30,12 +30,31 @@ export default {
 </script>
 
 <style>
-div.gallery {
+.gallery {
   align-items: center;
   margin: 20px;
   border: 1px solid #ccc;
   float: left;
   width: 250px;
+}
+
+.bb{
+  align-items: center;
+  margin: 20px;
+  border:none;
+  float: left;
+  width: 200px;
+}
+
+.bb > .desc{
+  background: transparent;
+  border:none;
+}
+
+.bb > .title{
+  background: transparent;
+  border:none;
+  height: 100px;
 }
 
 

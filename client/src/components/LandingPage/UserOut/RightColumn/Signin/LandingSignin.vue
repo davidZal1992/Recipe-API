@@ -3,11 +3,11 @@
       <div class="sign-in-form"> 
         <h1>Sign In Now</h1>
         <form>
-        <input type="email" class="input-box" placeholder="Your User name">
-        <input type="password" class="input-box" placeholder="Your Password">
-        <input type="submit" class="signin-btn" value="Sign in">
+        <input type="text" class="input-box" v-model="username" placeholder="Your User name">
+        <input type="password" class="input-box" v-model="password" placeholder="Your Password">
+        <input type="submit" class="signin-btn" value="Sign in" v-on:click="login">
         <hr>
-        <p>Do you have an account?<router-link to="/signin"> Sign in</router-link></p>
+        <p>Do you not have an account?<router-link to="/signin"> Sign up</router-link></p>
         </form>
     </div>
   </span>
@@ -15,7 +15,31 @@
 
 <script>
 export default {
-  name: 'SignIn'
+  name: 'SignIn',
+  data() {
+    return {
+        username: "",
+        password: ""
+   }
+ },
+ methods:{
+  async login(){
+      try {
+        console.log(this.username)
+        console.log(this.password)
+        const response = await this.axios.post(
+          "http://localhost:3000/api/auth",
+          {
+            username: this.username,
+            password: this.password
+          }
+        );
+        console.log(response);
+      } catch (err) {
+        console.log(err.response);
+      }
+  }
+}
 }
 </script>
 
@@ -78,6 +102,7 @@ hr{
 
 p{
     color:white;
+    font-size: 15px;
 }
 
 

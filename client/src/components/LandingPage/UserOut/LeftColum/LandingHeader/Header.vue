@@ -1,17 +1,17 @@
 <template>
      <div class="landing-inner">
-            <div class="header">
+            <div>
             <h1 class="header">WELCOME TO <span style="color:green">HAMBUR</span>GESA</h1>
             <p class="header-desc">
             Create, share and search recipes and explore for new kitchens over the all world
           </p>
           </div>
           <div class="buttons">
-            <router-link to="/search" id=searchbtn class="btn btn-primary">Search</router-link>
-            <router-link to="/register" id=signin class="btn btn-secondary">Sign Up</router-link>
+            <button class="searchbtn">Search<router-link to="/search" ></router-link></button>
+            <button class="signin">Sign Up<router-link to="/register"></router-link></button>
           </div>
     </div>
-</template>
+</template>w
 
 <script>
 export default {
@@ -20,27 +20,41 @@ export default {
 </script>
 
 <style>
-#searchbtn{
+.searchbtn{
   border:1px solid white;
-  height: 40px;
+  height: 35px;
   width:100px;
   background: transparent;
   color:white;
   margin-right: 35px;
+   font-family: 'Fjalla One', sans-serif;
 }
 
-#searchbtn:hover{
+.searchbtn:hover{
   color:green;
   background:white
 }
 
-#signin
+.buttons{
+  display: flex;
+  margin:auto;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  font-size:20px;
+  left:35%
+}
+.signin
 {
-  border:none;
-  height: 40px;
+  border:1px solid white;
+  border-radius: 5px;
+  height: 35px;
+  color:white;
   width:100px;
   background: rgb(59, 189, 59);
   outline: none;
+  cursor: pointer;
+   font-family: 'Fjalla One', sans-serif;
 }
 
 .header-desc{
@@ -49,7 +63,7 @@ export default {
    font-family: 'Roboto Slab', serif;
 }
 
-#signin:hover{
+.signin:hover{
   color:green;
   background:white
 }
@@ -62,8 +76,6 @@ export default {
 .landing-inner {
 color: #fff;
 height: 100%;
-display: flex;
-flex-direction: column;
 width: 80%;
 margin:auto
 }

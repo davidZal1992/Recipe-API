@@ -1,7 +1,7 @@
 
 
-import Search from "./views/Search.vue"
-import Landing from "./views/Landing.vue"
+import Search from "../src/views/Search.vue"
+import Landing from "../src/views/Landing.vue"
 const routes = [
   {
     path: "/search",
