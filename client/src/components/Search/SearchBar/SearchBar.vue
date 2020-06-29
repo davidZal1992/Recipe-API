@@ -1,22 +1,22 @@
 <template>
 <span class="serachpage">
-  <div>
-  <div class="fatherwrapper">
-    <div class="wrapper">
-            <input type="text" v-model="query" class="input" placeholder="wich recipe are you looknig for?">
-            <div class="search" v-on:click="$emit('search',query,number,cuisine,diet,intolerances,sort)">
-                <font-awesome-icon class="searchicon" icon="search"/>
+    <div>
+        <div class="fatherwrapper">
+            <div class="wrapper">
+                <input type="text" v-model="query" class="input" placeholder="wich recipe are you looknig for?">
+                <div class="search" v-on:click="$emit('search',query,number,cuisine,diet,intolerances,sort)">
+                    <font-awesome-icon class="searchicon" icon="search"/>
+                </div>
             </div>
+            <FilterModal @update-res="filters" />
+            <div class="clear" v-on:click="clean">clear</div>
+        </div>
     </div>
-        <FilterModal @update-res="filters" />
-    <div class="clear" v-on:click="clean">clear</div>
-  </div>
-  </div>
   </span>
 </template>
 
 <script>
-import FilterModal from '../Filters/FilterModal/FilterModal'
+import FilterModal from '../SearchFilter/SearchFilterModalWindow/SearchFilterModalWindow'
 export default {
     name:'SearchBar',
     components:{
@@ -44,7 +44,6 @@ export default {
             this.sort="",
             this.intolerances=""
             this.$emit('clear')
-             window.location.reload()
         },
         filters(args)
         {   
@@ -84,69 +83,69 @@ export default {
     display: flex;
     justify-content: space-between;
 }
-    .wrapper .input{
-        width: 85%;
-        padding: 15px 20px;
-        border: none;
-        outline: none;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-    .search{
-        background: rgb(59, 189, 59);
-        width: 10%;
-        border-radius: 5px;
-        position: relative;
-        cursor:pointer
-    }
+.wrapper .input{
+    width: 85%;
+    padding: 15px 20px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.search{
+    background: rgb(59, 189, 59);
+    width: 10%;
+    border-radius: 5px;
+    position: relative;
+    cursor:pointer
+}
 
-    .searchicon{
-        position: absolute;
-        top:50%;
-        left:50%;
-        transform: translate(-50%,-50%);
-        font-size: 18px;
-        color:white;
-    }
+.searchicon{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    font-size: 18px;
+    color:white;
+}
     
-    .searcheader{
-        position: absolute;
-        font-family: 'Open Sans', sans-serif;
-        color:white;
-        font-size:50px;
-        letter-spacing: 3px;
-        top:10%;
-        left:50%;
-        transform: translate(-50%,-50%);
-    }
+.searcheader{
+    position: absolute;
+    font-family: 'Open Sans', sans-serif;
+    color:white;
+    font-size:50px;
+    letter-spacing: 3px;
+    top:10%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
 
     
-    .filter{
-        position:relative;
-        float:left;
-        left:4%;
-        width:75px;
-        margin-bottom: 0.5rem;
-        background: rgb(59, 189, 59);
-        border-radius: 5px;
-        cursor:pointer;
-        border:none;
-        color:white;
-        outline: none;
-    }
+.filter{
+    position:relative;
+    float:left;
+    left:4%;
+    width:75px;
+    margin-bottom: 0.5rem;
+    background: rgb(59, 189, 59);
+    border-radius: 5px;
+    cursor:pointer;
+    border:none;
+    color:white;
+    outline: none;
+}
 
-    .clear{
-        position:relative;
-        float:left;
-        left:4%;
-        width:75px;
-        margin-left:15px;
-        margin-bottom: 0.5rem;
-        background: white;
-        border-radius: 5px;
-        cursor:pointer;
-        border:none;
-        color:green;
-        outline: none;
-    }
+.clear{
+    position:relative;
+    float:left;
+    left:4%;
+    width:75px;
+    margin-left:15px;
+    margin-bottom: 0.5rem;
+    background: white;
+    border-radius: 5px;
+    cursor:pointer;
+    border:none;
+    color:green;
+    outline: none;
+}
 </style>

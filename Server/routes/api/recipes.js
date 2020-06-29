@@ -105,15 +105,15 @@ router.get('/familyrecipes',auth, async function(req,res,next){
 //@desc create new familyrecipe ofuser
 //@access Private
 router.post('/familyrecipes',auth, [
-check('name', 'name must be not empty').not().isEmpty(),
+check('title', 'name must be not empty').not().isEmpty(),
 check('image', 'image must be not empty and contain url').not().isEmpty().isURL(),
-check('time', 'time must be not empty and integer').not().isEmpty().isInt(),
-check('isGluten', 'isGluten must be not empty and boolean').not().isEmpty().isBoolean(),
-check('isVegaterian', 'isVegaterian must be not empty and boolean').not().isEmpty().isBoolean(),
+check('readyInMinutes', 'time must be not empty and integer').not().isEmpty().isInt(),
+check('glutenFree', 'isGluten must be not empty and boolean').not().isEmpty().isBoolean(),
+check('vegetarian', 'isVegaterian must be not empty and boolean').not().isEmpty().isBoolean(),
 check('belongs', 'belongs must contain at leat 1 family member').not().isEmpty(),
 check('wichtime', 'wichtime must be not empty').not().isEmpty(),
 check('ingredients', 'ingredients must be not null').not().isEmpty(),
-check('totalamount', 'totalamount must be not null').not().isEmpty(),
+check('serving', 'totalamount must be not null').not().isEmpty(),
 check('instructions', 'instructions must be not null').not().isEmpty()
 ], async function(req,res,next){
   try{
@@ -135,13 +135,13 @@ check('instructions', 'instructions must be not null').not().isEmpty()
 //@desc create new recipe of user
 //@access Private
 router.post('/',auth, [
-check('name', 'first name must be not empty').not().isEmpty(),
-check('image', 'img must be not empty').not().isEmpty(),
-check('time', 'time must be not empty and integer').not().isEmpty().isInt(),
-check('isGluten', 'time must be not empty and boolean').not().isEmpty().isBoolean(),
-check('isVegaterian', 'time must be not empty and boolean').not().isEmpty().isBoolean(),
+check('title', 'name must be not empty').not().isEmpty(),
+check('image', 'image must be not empty and contain url').not().isEmpty().isURL(),
+check('readyInMinutes', 'time must be not empty and integer').not().isEmpty().isInt(),
+check('glutenFree', 'isGluten must be not empty and boolean').not().isEmpty().isBoolean(),
+check('vegetarian', 'isVegaterian must be not empty and boolean').not().isEmpty().isBoolean(),
 check('ingredients', 'ingredients must be not null').not().isEmpty(),
-check('totalAmount', 'totalAmount must be not null').not().isEmpty(),
+check('servings', 'totalAmount must be not null').not().isEmpty(),
 check('instructions', 'instructions must be not null').not().isEmpty()
 ], async function(req,res,next){
   try{
@@ -192,11 +192,6 @@ router.get('/random', async function(req,res,next){
 router.get("/search", async function(req,res,next) {
   try {
     const { query, cuisine, diet, intolerances, number } = req.query;
-    console.log(query)
-    console.log(number)
-    console.log(cuisine + ' cuisineempty')
-    console.log(diet + 'diet empty')
-    console.log(intolerances + 'intoleracnes empty')
     const search_response = await axios.get(`${api_domain}/search`, {
     params: {
         cuisine: cuisine,
@@ -221,7 +216,6 @@ router.get("/search", async function(req,res,next) {
     //Convert to my pattern
     let convertedRecipes=[];
     recipes.map((recipe) => convertedRecipes.push(recipes_actions.createPreviewRecipe(recipe.data)));
-    console.log(convertedRecipes)
     res.send(convertedRecipes);
     } 
   catch (err) {
@@ -248,5 +242,8 @@ router.get('/:id',auth, async function(req,res,next){
      next(err)
   }
 });
+
+
+
 
 module.exports = router;

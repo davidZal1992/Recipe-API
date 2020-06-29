@@ -24,9 +24,9 @@ Vue.use(IconsPlugin)
 
 // Import FontAwsome
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUtensils,faSignInAlt,faUserPlus,faSearch,faClock,faHeart,faLeaf} from '@fortawesome/free-solid-svg-icons'
+import { faUtensils,faSignInAlt,faUserPlus,faSearch,faClock,faHeart,faLeaf,faEye,faStar} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faUtensils,faSignInAlt,faUserPlus,faSearch,faClock,faHeart,faLeaf)
+library.add(faUtensils,faSignInAlt,faUserPlus,faSearch,faClock,faHeart,faLeaf,faEye,faStar)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 // Import our routes
@@ -38,7 +38,27 @@ const router = new VueRouter({
 });
 
 
+const shared_data = {
+  username: localStorage.username,
+  login(username){
+    localStorage.setItem("username",username)
+    this.username = username;
+  },
+  logout(){
+    localStorage.removeItem("username");
+    localStorage.removeItem("favorites");
+    localStorage.removeItem("watch");
+  }
+  };
+
+axios.defaults.withCredentials = true;
+
 new Vue({
   router,
+  data(){
+    return{
+      store:shared_data
+    };
+  },
   render: h => h(App),
 }).$mount('#app')

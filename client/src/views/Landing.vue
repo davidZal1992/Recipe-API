@@ -1,27 +1,45 @@
 <template>
   <span>
+    <span v-if=this.$root.store.username>
+      <LeftColumnIn :randomRecipes="randomRecipes" v-on:randomrecipes="getRandomRecipe" />
+    </span>
+    <span v-else>
     <LeftColumOut :randomRecipes="randomRecipes" v-on:randomrecipes="getRandomRecipe" />
-    <RightColumOut/>
+    </span>
+    <span v-if=!this.$root.store.username>
+      <RightColumOut/>
+    </span>
+    <span v-else>
+      <RightColumIn :lastWatchedRecipes="lastWatchedRecipes"/>
+    </span>
   </span>
 </template>
 
 <script>
-import LeftColumOut from '../components/LandingPage/UserOut/LeftColum/LeftColumnOut/LeftColumOut'
-import RightColumOut from '../components/LandingPage/UserOut/RightColumn/RightColumOut'
+import LeftColumOut from '../components/LandingPage/UserOut/UserOutLeftColumn/UserOutLeftColumn'
+import RightColumOut from '../components/LandingPage/UserOut/UserOutRightColumn/RightColumOut'
+import RightColumIn from '../components/LandingPage/UserIn/UserInRightColumn/UserInRightColumn'
+import LeftColumnIn from '../components/LandingPage/UserIn/UserInLeftColumn/UserInLeftColumn'
 
 export default {
 name: 'Landing',
 components: {
     LeftColumOut,
-    RightColumOut
+    RightColumOut,
+    RightColumIn,
+    LeftColumnIn
   },
 data(){
   return{
-    randomRecipes:[]
+    randomRecipes:[],
+    lastWatchedRecipes:[]
   }
 },
 mounted() {
   this.getRandomRecipe();
+  console.log()
+  if(this.$root.store.username)
+  this.getLastWatchRecipe();
 },
 methods:{
   async getRandomRecipe(){
@@ -31,13 +49,27 @@ methods:{
         this.randomRecipes=[]
         this.randomRecipes.push(...recipesFromServer)
     }
-    catch(error)
-    {
-        console.log(error)
+    catch(error){
+      console.log(error)
     }
-}
-}
-}
+  },
+  async getLastWatchRecipe(){
+    try{
+      console.log('abb')
+      const response = await this.axios.get("https://david-matan-recipe-api-server.herokuapp.com/api/profiles/lastwatch")
+      const recipesFromServer = response.data
+      this.lastWatchedRecipes=recipesFromServer
+    
+    }
+    catch(err){
+      if(err.response.status===401){
+               this.$root.store.username=undefined
+               this.$router.push('/')
+    }
+        console.log(err.response)
+    }
+  }
+}}
 </script>
 
 <style>

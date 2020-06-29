@@ -6,8 +6,8 @@
             Create, share and search recipes and explore for new kitchens over the all world
           </p>
           </div>
-          <div class="buttons">
-            <button class="searchbtn">Search<router-link to="/search" ></router-link></button>
+          <div class="headerbuttons">
+       <router-link to="/search" >    <button class="searchbtn">Search</button></router-link>
             <button class="signin">Sign Up<router-link to="/register"></router-link></button>
           </div>
     </div>
@@ -35,7 +35,11 @@ export default {
   background:white
 }
 
-.buttons{
+.searchbtn:focus{
+  outline: none;
+}
+
+.headerbuttons{
   display: flex;
   margin:auto;
   align-items: center;
@@ -66,6 +70,10 @@ export default {
 .signin:hover{
   color:green;
   background:white
+}
+
+.signin:focus{
+  outline: none;
 }
 
 .header{

@@ -9,9 +9,13 @@ var cors = require('cors');
 const app=express();
 
 //Init Middleware
+const corsConfig = {
+  origin: 'http://localhost:8080',
+  credentials: true,
+};
+app.use(cors(corsConfig));
+app.options("*", cors(corsConfig));
 
-app.use(cors());
-app.options("*", cors());
 
 app.use(bodyParser.json({extended: false}))
 
@@ -23,8 +27,12 @@ app.use(cookieParser());
 app.use(sessions({
   cookieName: 'session', 
   secret: process.env.COOCKIE_SECRET, 
-  ephemeral:true,
-  duration: 2 * 60 * 60 * 1000
+  duration: 2 * 60 * 60 * 1000,
+  cookie:{
+    ephemeral:false,
+    httpOnly: false,
+    secure:false
+  }
 }));
  
 //Check server Running
@@ -38,8 +46,8 @@ app.use('/api/profiles', require('./routes/api/profiles'))
 
 //Catch all
 app.use(function (err, req, res, next) {
-  console.error(err.status);
-  return res.status(err.status || 500).send({ message: err.message, success: false });
+console.error(err.status);
+return res.status(err.status || 500).send({ message: err.message, success: false });
 });
 
 const PORT = process.env.PORT || 3000;

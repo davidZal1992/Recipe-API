@@ -1,13 +1,13 @@
 <template>
   <span>
       <div class="column-right">
-      <SignIn/>
-    </div>
+        <SignIn/>
+      </div>
   </span>
 </template>
 
 <script>
-import SignIn from '../RightColumn/Signin/LandingSignin'
+import SignIn from '../UserOutRightColumn/UserOutRightColumnSignIn/UserOutRightColumnSignIn'
 export default {
     name:'RightColumOut',
     components:{
@@ -19,9 +19,9 @@ export default {
 <style>
 .column-right {
   float: right; 
-  width: 33.333%;
+  width: 25%;
   background-image: url('../../../../assets/1.jpg');
-  height: 95vh;
+  height: 100vh;
   background-repeat: no-repeat;
   background-size:cover;
   border-left:2px inset rgba(172, 172, 172, 0.2);

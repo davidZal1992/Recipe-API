@@ -24,9 +24,9 @@
 
 <script>
   import { mdbContainer, mdbBtn, mdbModal, mdbModalHeader, mdbModalBody, mdbModalFooter } from 'mdbvue';
-  import DropDown from './DropDown'
+  import DropDown from '../SearchFilterModalWindow/SearchFilterDropDown/DropDown'
   import {optionsCuisine,optionsDiet,optionsIntolerances} from '../../../../filters'
-  import Toggle from '../FilterModal/Toggle'
+  import Toggle from '../SearchFilterModalWindow/SearchFilterToggles/SearchFilterToggles'
   export default {
     name: 'FilterModal',
       components: {

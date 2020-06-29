@@ -11,19 +11,18 @@ import PreviewRecipe from '../../PreviewRecipe/PreviewRecipe'
 export default {
     name: 'Result',
     components: {
-        PreviewRecipe
+    PreviewRecipe
     },
-     data()
-     { return {
+     data() { return {
     inParent: true
   }
      },
     props: {
-    recipe: {
-        type: Object,
-        required: true
+      recipe: {
+          type: Object,
+          required: true
       }
-}
+  }
 }
 </script>
 
@@ -36,8 +35,20 @@ export default {
     display:flex;
 }
 
-.preview{
+.userecipesummery{
+    height:320px;
+    width:80%;
+    border-radius: 15px;
+    background: rgba(0,0,0,0.6);
+    display:flex;
+}
 
+.userecipesummery > .summary{
+    color:white;
+    margin-right:15px;
+    text-decoration: white;
+    overflow: hidden;
+    text-align: left;
 }
 
 .summary{
@@ -47,6 +58,7 @@ export default {
     overflow: hidden;
     text-align: left;
 }
+
 
 a, a:hover, a:focus, a:active {
       text-decoration: none;

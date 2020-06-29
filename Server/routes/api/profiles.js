@@ -46,11 +46,15 @@ router.put('/favorite',auth,[check('id', 'must be not empty').not().isEmpty()],a
          return res.status(400).json({ errors: errors.array() });
    
       const {id} = req.body;
-      let result = await db_actions.getUserSpesificRecipe(id,next);
-
       //Check if the recipe belong to user
+      result = await db_actions.getUserSpesificRecipe(id,next);
       if(result.recordset && result.recordset.length!=0)
       await recipes_actions.addToFavorite(id,req.user,'user',next,res)
+
+      //Check if the recipe belong to family
+      result = await db_actions.getFamilyRecipe(id,next);
+      if(result.recordset && result.recordset.length!=0)
+      await recipes_actions.addToFavorite(id,req.user,'family',next,res)
 
       else{
       //Check if this recipe is belong to API
@@ -67,6 +71,55 @@ router.put('/favorite',auth,[check('id', 'must be not empty').not().isEmpty()],a
    }
 })
 
-
+//@route GET/api/profile/lastwatch
+//@desc get information about last watch recipe of user
+//@access Private
+router.get('/lastwatch',auth, async function(req,res,next){
+   try {
+     let result = await db_actions.getProfile(req.user,next)
+     if(!result)
+         return next(createError(404,'Profile doesnt exists'))
+     if(result.recordset.length === 0)
+         return next(createError(404,'Profile doesnt exists'))
+ 
+     var lastWatchRecipes=[]
+     let userProfile = result.recordset[0]; 
+     let newone
+     //if there is last watch recipe so return preview
+     if(userProfile.lastWatched!==''){
+       userProfile.lastWatched= JSON.parse(userProfile.lastWatched)
+     //Promise for all requests
+        newone = await  Promise.all(userProfile.lastWatched.map(async recipeId => {
+     //If from api so
+         if(recipeId.type==='api'){
+           const get_information= await  recipes_actions.getRecipeInfo(recipeId.id)
+           preview= await  recipes_actions.createPreviewRecipe(get_information.data,'spooncalur')
+           lastWatchRecipes.push(preview)
+           return lastWatchRecipes
+           }
+     //if else from user
+          else if(recipeId.type==='user'){
+           result = await db_actions.getUserSpesificRecipe(req.params.id,next)
+           recipe = result.recordset[0];
+           preview=recipes_actions.createPreviewRecipe(recipe,'user')
+           lastWatchRecipes.push(preview)
+           return lastWatchRecipes
+           }
+      // else from family
+           else
+           result = await db_actions.getUserFamilySpesificRecipe(req.params.id,next)
+           recipe = result.recordset[0];
+           preview=recipes_actions.createPreviewRecipe(recipe,'family')
+           lastWatchRecipes.push(preview)
+           return lastWatchRecipes
+         }
+       ))
+   } 
+         res.status(200).send(lastWatchRecipes);
+   }
+   catch (err){
+      next(err)
+   }
+ });
 
 module.exports = router;
