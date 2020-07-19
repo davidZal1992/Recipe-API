@@ -45,27 +45,23 @@ router.put('/favorite',auth,[check('id', 'must be not empty').not().isEmpty()],a
       if(!errors.isEmpty())
          return res.status(400).json({ errors: errors.array() });
    
-      const {id} = req.body;
+      const {id,type} = req.body;
       //Check if the recipe belong to user
-      result = await db_actions.getUserSpesificRecipe(id,next);
-      if(result.recordset && result.recordset.length!=0)
+      if(type==='user'){
       await recipes_actions.addToFavorite(id,req.user,'user',next,res)
-
+      }
       //Check if the recipe belong to family
-      result = await db_actions.getFamilyRecipe(id,next);
-      if(result.recordset && result.recordset.length!=0)
+      else if(type==='family'){
       await recipes_actions.addToFavorite(id,req.user,'family',next,res)
-
+      }
+       //Check if this recipe is belong to API
       else{
-      //Check if this recipe is belong to API
-      await recipes_actions.getRecipeInfo(id);
       await recipes_actions.addToFavorite(id,req.user,'spooncalur',next,res);
-      
+      }
  
       res.status(200).json({msg: "Recipe successfuly added" , success: 'true'}) 
 
    }
-}
    catch(error){
       next(error);
    }
@@ -84,7 +80,7 @@ router.get('/lastwatch',auth, async function(req,res,next){
  
      var lastWatchRecipes=[]
      let userProfile = result.recordset[0]; 
-     let newone
+     let newone;
      //if there is last watch recipe so return preview
      if(userProfile.lastWatched!==''){
        userProfile.lastWatched= JSON.parse(userProfile.lastWatched)
@@ -99,7 +95,7 @@ router.get('/lastwatch',auth, async function(req,res,next){
            }
      //if else from user
           else if(recipeId.type==='user'){
-           result = await db_actions.getUserSpesificRecipe(req.params.id,next)
+           result = await db_actions.getUserSpesificRecipe(recipeId.id,next)
            recipe = result.recordset[0];
            preview=recipes_actions.createPreviewRecipe(recipe,'user')
            lastWatchRecipes.push(preview)
@@ -107,7 +103,7 @@ router.get('/lastwatch',auth, async function(req,res,next){
            }
       // else from family
            else
-           result = await db_actions.getUserFamilySpesificRecipe(req.params.id,next)
+           result = await db_actions.getUserFamilySpesificRecipe(recipeId.id,next)
            recipe = result.recordset[0];
            preview=recipes_actions.createPreviewRecipe(recipe,'family')
            lastWatchRecipes.push(preview)

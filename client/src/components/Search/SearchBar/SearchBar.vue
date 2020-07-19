@@ -2,8 +2,8 @@
 <span class="serachpage">
     <div>
         <div class="fatherwrapper">
-            <div class="wrapper">
-                <input type="text" v-model="query" class="input" placeholder="wich recipe are you looknig for?">
+            <div class="wrapper_searchBar">
+                <input type="text" v-model="query" class="input" placeholder="Which recipe are you looknig for?">
                 <div class="search" v-on:click="$emit('search',query,number,cuisine,diet,intolerances,sort)">
                     <font-awesome-icon class="searchicon" icon="search"/>
                 </div>
@@ -58,7 +58,7 @@ export default {
 }
 </script>
 
-<style>
+<style >
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Open+Sans&display=swap');
 
 .searchpage{
@@ -78,12 +78,12 @@ export default {
     height: 120px;
     border-radius: 5px ;
 }
-.wrapper{
+.wrapper_searchBar{
     padding:15px;
     display: flex;
     justify-content: space-between;
 }
-.wrapper .input{
+.wrapper_searchBar .input{
     width: 85%;
     padding: 15px 20px;
     border: none;

@@ -1,18 +1,15 @@
 <template>
-  <span>
-    <span v-if=this.$root.store.username>
-      <LeftColumnIn :randomRecipes="randomRecipes" v-on:randomrecipes="getRandomRecipe" />
-    </span>
-    <span v-else>
-    <LeftColumOut :randomRecipes="randomRecipes" v-on:randomrecipes="getRandomRecipe" />
-    </span>
-    <span v-if=!this.$root.store.username>
-      <RightColumOut/>
-    </span>
-    <span v-else>
-      <RightColumIn :lastWatchedRecipes="lastWatchedRecipes"/>
-    </span>
-  </span>
+  <div >
+    <div >
+    <LeftColumnIn v-if=this.$root.store.username :randomRecipes="randomRecipes" v-on:randomrecipes="getRandomRecipe" />
+    <LeftColumOut  v-else :randomRecipes="randomRecipes" v-on:randomrecipes="getRandomRecipe" />
+    </div>
+  <div >
+     <RightColumOut  v-if=!this.$root.store.username id="right_colum_out" />
+     <RightColumIn v-else :lastWatchedRecipes="lastWatchedRecipes"/>
+  </div>
+     
+  </div>
 </template>
 
 <script>
@@ -37,7 +34,6 @@ data(){
 },
 mounted() {
   this.getRandomRecipe();
-  console.log()
   if(this.$root.store.username)
   this.getLastWatchRecipe();
 },
@@ -55,25 +51,32 @@ methods:{
   },
   async getLastWatchRecipe(){
     try{
-      console.log('abb')
       const response = await this.axios.get("https://david-matan-recipe-api-server.herokuapp.com/api/profiles/lastwatch")
       const recipesFromServer = response.data
       this.lastWatchedRecipes=recipesFromServer
-    
     }
     catch(err){
+      console.log(err.response)
       if(err.response.status===401){
-               this.$root.store.username=undefined
-               this.$router.push('/')
+          this.$root.store.username=undefined
+          this.$router.push('/login')
     }
-        console.log(err.response)
+        console.log(err)
     }
   }
 }}
 </script>
 
-<style>
+<style >
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Fjalla+One&family=Roboto+Slab&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&family=Marck+Script&family=Merienda&family=Oleo+Script&display=swap');
+
+@media only screen and (max-width: 600px) {
+#right_colum_out{
+  display: none;
+}
+}
+
+
 </style>

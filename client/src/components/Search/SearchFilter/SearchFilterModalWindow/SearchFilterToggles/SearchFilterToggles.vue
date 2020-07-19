@@ -65,7 +65,6 @@ export default {
   },
   mounted: function()
   {
-      console.log(this.backgroundSecond)
       if(this.oldButtonFirst==='likes' || this.oldButtonSecond===10)
       {
         this.backgroundFirst='rgb(59, 189, 59)'
@@ -80,7 +79,7 @@ export default {
 
 </script>
 
-<style>
+<style >
     .firstbtn{
         margin-left:0.5rem;
         background:white;

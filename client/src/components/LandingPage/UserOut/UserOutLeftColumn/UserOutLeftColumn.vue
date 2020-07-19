@@ -1,16 +1,16 @@
 <template>
-   <div class="column-left">
+   <div class="column-left-out">
        <div class=landing>
           <Header/>
           <div class="container">
             <div class="recipes">
               <span v-for="recipe in this.randomRecipes" :key="recipe.id" class="recipes">
-                <PreviewRecipe id="abc" :recipe="recipe" />
+                           <router-link :to="{ name: 'recipe', params: {type:recipe.type,id: recipe.id}}"><PreviewRecipe id="abc" :recipe="recipe" /></router-link>
               </span>
             </div>
+             <button class=morerecipes  v-on:click="$emit('randomrecipes')">Show more</button>
         </div>
-          <button class=morerecipes  v-on:click="$emit('randomrecipes')">Show more</button>
-      </div>
+        </div>
    </div>
 </template>
 
@@ -34,16 +34,17 @@ export default {
 }
 </script>
 
-<style>
-.column-left{
-display: inline-block; 
-width: 75%;
+<style >
+.column-left-out{
+width:75%;
+float:left;
 background: url('../../../../assets/3.jpeg')  ;
 -webkit-background-size: cover;
 -moz-background-size: cover;
 -o-background-size: cover;
 background-size: cover;
 height: 100vh;
+
 }
 
 .landing {
@@ -53,14 +54,17 @@ position: relative;
 
 .container{
     text-align: center;
+    align-items: center;
 
 }
 
 .recipes{
-  width: 100%;
+  width: auto;
   max-width: 1100px;
 }
 .morerecipes{
+  
+  position: relative;
   width: 100px;
   height: 45px;
   border:1px solid white;
@@ -69,6 +73,7 @@ position: relative;
   border-radius: 5px;
   font-family: 'Fjalla One', sans-serif;
   outline: none;
+  position:inherit;
 }
 
 .morerecipes:hover{

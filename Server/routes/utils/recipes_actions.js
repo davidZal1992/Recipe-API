@@ -7,7 +7,7 @@ const db_actions = require('./db_actions')
 function createPreviewRecipe(recipeFromApi,type) {
     let recipe={}
     recipe.id=recipeFromApi.id
-    recipe.type=
+    recipe.type=type
     recipe.title=recipeFromApi.title
     recipe.readyInMinutes=recipeFromApi.readyInMinutes
     recipe.aggregateLikes=recipeFromApi.aggregateLikes
@@ -31,19 +31,19 @@ function createPreviewRecipe(recipeFromApi,type) {
     recipe.vegetarian=recipeFromApi.vegetarian
     recipe.servings=recipeFromApi.servings
     recipe.ingredients=[];
-    recipe.ingredients.push(recipeFromApi.extendedIngredients.map((ingredient) =>{
+    recipeFromApi.extendedIngredients.map((ingredient) =>{
       let newIngredient = {'name' : ingredient.name , 'unit' : ingredient.unit , 'amount' : ingredient.amount}
-      return newIngredient
-      }
-    ));
-    
+      recipe.ingredients.push(newIngredient)
+      })
     recipe.instructions=[]
-    recipe.instructions.push(recipeFromApi.analyzedInstructions[0].steps.map((instruction) =>{
-      return {
-        step: instruction.number,
-        instruction: instruction.step
-      }   
-    }))
+    recipeFromApi.analyzedInstructions[0].steps.map((instruction) =>{
+      let newInstruction = {
+        'step': instruction.number,
+        'instruction': instruction.step
+      }
+      recipe.instructions.push(newInstruction)
+    })   
+
     recipe.summary=recipeFromApi.summary;
     return recipe;
   }
@@ -64,13 +64,11 @@ function getRecipeInfo(id) {
   async function addToFavorite(id,username,type,next,res) {
     try{
       profile = await db_actions.getProfile(username)
-
       if(!profile)
         return next(createError(404,'profile doesnt exists'))
       if(profile.recordset.length === 0){
         return next(createError(404,'profile doesnt exists'))
       }
-
       //check if already saved in favorites
       if(profile.recordset[0].favoriteRecipe.length===0)
         favoriteRecipe=[]
@@ -85,6 +83,7 @@ function getRecipeInfo(id) {
       //Check if the recipe is user or spoon api recipe 
         let newFavorite={'id':id, 'type': type }
         favoriteRecipe.push(newFavorite)
+        var pool = await poolPromise  
         await pool.request().query(`update profile set favoriteRecipe = '${JSON.stringify(favoriteRecipe)}' where username =  '${username}'`);
       
     }

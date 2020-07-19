@@ -21,7 +21,11 @@ router.get('/',auth, async function(req,res,next){
       recipes=await db_actions.getUserRecipes(req.user,next)
       if(!recipes)
         return next(createError(404,'Recipes doesnt exists'))
-      res.status(200).send({recipes});
+      let preview=[]
+      recipes.map((recipe) =>{
+      preview.push(recipes_actions.createPreviewRecipe(recipe,'user'))
+      })
+      res.status(200).send({preview});
   }
   catch (err){
     next(err);
@@ -93,8 +97,14 @@ router.get('/familyrecipes/:id',auth, async function(req,res,next){
 router.get('/familyrecipes',auth, async function(req,res,next){
   try {
       recipes=await db_actions.getFamilyRecipe(req.user,next)
-      res.status(200).send({recipes});
-  }
+      if(!recipes)
+      return next(createError(404,'Recipes doesnt exists'))
+      let preview=[]
+      recipes.map((recipe) =>{
+      preview.push(recipes_actions.createPreviewRecipe(recipe,'family'))
+      })
+        res.status(200).send({preview});
+    }
   catch (err) {
     next(err);
   }
@@ -113,7 +123,7 @@ check('vegetarian', 'isVegaterian must be not empty and boolean').not().isEmpty(
 check('belongs', 'belongs must contain at leat 1 family member').not().isEmpty(),
 check('wichtime', 'wichtime must be not empty').not().isEmpty(),
 check('ingredients', 'ingredients must be not null').not().isEmpty(),
-check('serving', 'totalamount must be not null').not().isEmpty(),
+check('servings', 'serving must be not null').not().isEmpty(),
 check('instructions', 'instructions must be not null').not().isEmpty()
 ], async function(req,res,next){
   try{
@@ -166,7 +176,6 @@ check('instructions', 'instructions must be not null').not().isEmpty()
 //@access Public
 router.get('/random', async function(req,res,next){
   try {
-   
       let instructionsEmpty=true;
       while(instructionsEmpty){
       var get_random = await axios.get(`${api_domain}/random`, {
@@ -177,7 +186,7 @@ router.get('/random', async function(req,res,next){
       });
       instructionsEmpty = get_random.data.recipes.some((recipe_raw) => recipe_raw==='')
     }
-    let randomRecipes = get_random.data.recipes.map((recipe_raw) => recipes_actions.createPreviewRecipe(recipe_raw))
+    let randomRecipes = get_random.data.recipes.map((recipe_raw) => recipes_actions.createPreviewRecipe(recipe_raw,'spooncalur'))
     res.status(200).send(randomRecipes);
     } 
     catch (err){
@@ -215,7 +224,7 @@ router.get("/search", async function(req,res,next) {
       
     //Convert to my pattern
     let convertedRecipes=[];
-    recipes.map((recipe) => convertedRecipes.push(recipes_actions.createPreviewRecipe(recipe.data)));
+    recipes.map((recipe) => convertedRecipes.push(recipes_actions.createPreviewRecipe(recipe.data,'spooncalur')));
     res.send(convertedRecipes);
     } 
   catch (err) {
@@ -234,7 +243,6 @@ router.get('/:id',auth, async function(req,res,next){
     await update_watch.updateLastWatchRecipe(req.user,req.params.id,'api',next)
     //Save the recipe in lastWatched recipes
     await update_watch.updateWatchHistoryRecipes(req.user,req.params.id,'api',next)
-
     res.send(reqRecipe)
     
   } 

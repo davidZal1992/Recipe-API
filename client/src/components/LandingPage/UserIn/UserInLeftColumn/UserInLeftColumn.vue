@@ -2,7 +2,7 @@
 <span class="column-left-in">
     <div class="wrap-last-left">
         <span v-for="recipe in this.randomRecipes" :key="recipe.id" class="recipes">
-            <PreviewRecipe :recipe="recipe" />
+             <router-link :to="{ name: 'recipe', params: {type:recipe.type,id: recipe.id}}"><PreviewRecipe :recipe="recipe" /></router-link>
         </span>
     </div>
     <div>

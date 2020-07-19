@@ -47,7 +47,6 @@ async function insertProfile(req,username,next)
 {
     try{
     //find the user
-    console.log(username)
     var pool = await poolPromise  
     var result = await pool.request().query(`select * from users where username='${username}'`);
     let data = result.recordset;
@@ -91,12 +90,12 @@ async function insertNewFamilyRecipe(recipeDetails,id,res,username)
       result = await pool.request()
       .input("id",sql.VarChar(4000), id)
       .input("username",sql.VarChar(10), username)
-      .input("name",sql.VarChar(4000), title)
+      .input("title",sql.VarChar(4000), title)
       .input("image",sql.VarChar(4000), image)
       .input("readyInMinutes",sql.BigInt, readyInMinutes)
       .input("aggregateLikes",sql.BigInt,0)
       .input("glutenFree", sql.Bit,glutenFree==='true' ? 1 : 0)
-      .input("isVegaterian", sql.Bit,vegetarian==='true' ? 1 : 0)
+      .input("vegetarian", sql.Bit,vegetarian==='true' ? 1 : 0)
       .input("belongs",sql.VarChar(4000), belongs)
       .input("wichtime",sql.VarChar(4000), wichtime)
       .input("generations",sql.Int,generations)
@@ -148,7 +147,6 @@ async function getFamilyRecipe(username,next)
 {
   try{
     pool = await poolPromise  
-    console.log(username)
     result = await pool.request().query(`select * from familyrecipes where username =  '${username}'`)
     if(result.recordset.length==0){
       next(createError(404,'Recipes doesnt exists'))
@@ -165,7 +163,6 @@ async function getUserRecipes(username,next)
 {
   try{
     pool = await poolPromise  
-    console.log(username)
     result = await pool.request().query(`select * from recipes where username =  '${username}'`)
     if(result.recordset.length==0){
       next(createError(404,'Recipes doesnt exists'))
@@ -206,7 +203,7 @@ async function getUserFamilySpesificRecipe(id,next)
 async function getUser(username,next)
 {
   try{
-    var pool = await poolPromise  
+    var pool = await poolPromise
     var result = await pool.request().query(`select * from users where username = '${username}'`)
     return result;
   }

@@ -13,12 +13,12 @@ export default {
 }
 </script>
 
-<style>
+<style >
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 
 .noWatchRecipes{
     height:250px;
-    width:38%;
+    width:70%;
     border-radius: 15px;
     background: rgba(0,0,0,0.6);
     margin:auto;

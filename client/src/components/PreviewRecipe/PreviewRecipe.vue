@@ -6,14 +6,14 @@
           <div class="upper">
               <span><font-awesome-icon class="icons" icon="clock"/> {{this.recipe.readyInMinutes}}</span>
               <span><font-awesome-icon class="icons" style="color:red" icon="heart"/> {{this.recipe.aggregateLikes}}</span>
-              <div>
+              <div class="icon-p">
                   <span><font-awesome-icon class="icons" icon="leaf"/></span>
                   <span v-if="recipe.vegetarian"><span><img style="width:20px; margin-bottom:3px; margin-left:13px" src="../../assets/V.png"/></span></span>
                   <span v-else><img style="width:20px; margin-bottom:3px; margin-left:13px" src="../../assets/x.png"/></span>
               </div>
            </div> 
            <div class="bottom">
-                <div v-if="this.$root.store.username">
+                <div  class='icon-p' v-if="this.$root.store.username">
                     <span><font-awesome-icon class="icons" icon="eye" alt="eye"/></span>
                     <span v-if="watch">
                        <span><img style="width:20px; margin-bottom:3px; margin-left:13px" src="../../assets/V.png"/></span>
@@ -22,17 +22,18 @@
                       <img style="width:20px; margin-bottom:3px; margin-left:13px" src="../../assets/x.png"/>
                     </span>
                 </div>
-                <div v-if="this.$root.store.username">
+                <div class='icon-p' v-if="this.$root.store.username">
                   <span v-if="this.isInFavorites">
                     <font-awesome-icon class="icons" style="color:yellow"  icon="star" alt="star"/></span>
                   <span v-else>
                     <font-awesome-icon class="icons" style="color:white"  icon="star" alt="star" @click="addToFavorite"/>
                   </span>
                 </div>
-                <span><img style="width:20px; margin-left:17px" src="../../assets/bread.png" alt="bread"/>
+                <div class='icon-p'>
+                <img style="width:20px; margin-left:17px" src="../../assets/bread.png" alt="bread"/>
                     <span v-if="recipe.glutenFree"><img style="width:20px; margin-bottom:3px; margin-left:13px" src="../../assets/V.png"/></span>
                     <span v-else><img style="width:20px; margin-bottom:3px; margin-left:13px" src="../../assets/x.png"/></span>
-                </span>
+                </div>
             </div>
       </div>
   </div>
@@ -65,13 +66,12 @@ export default {
      try{
        if(this.favorcolor!=='yellow'){
         e.preventDefault()
-        const response = await this.axios.put(
+         await this.axios.put(
           "https://david-matan-recipe-api-server.herokuapp.com/api/profiles/favorite",
           {
             id:this.recipe.id
           },
         );
-        console.log(response)
         let currentFavorites= localStorage.getItem('favorites')
         currentFavorites=JSON.parse(currentFavorites)
         currentFavorites.push({id:this.recipe.id})
@@ -84,7 +84,6 @@ export default {
      }
     },
      ifFavoriteExists() {
-              console.log(this.recipe)
         let favorites=localStorage.getItem("favorites")
         favorites=JSON.parse(favorites)
         if(favorites!==undefined&&favorites.length!==0){
@@ -103,7 +102,7 @@ export default {
 
 </script>
 
-<style>
+<style >
 .gallery {
   align-items: center;
   margin: 20px;
@@ -112,17 +111,22 @@ export default {
   width: 250px;
   border-radius: 15px ;
 }
+div.icon-p{
+  display:flex;
+}
+
 
 .gallery:hover{
   -moz-box-shadow: 0 0 10px white;
-    -webkit-box-shadow: 0 0 10px white;
-    box-shadow: 0 0 10px white;
-    cursor: pointer;
+  -webkit-box-shadow: 0 0 10px white;
+  box-shadow: 0 0 10px white;
+  cursor: pointer;
 }
 .upper{
  display: flex;
   justify-content: space-between;
 }
+
 
 .bottom{
   display: flex;
@@ -137,9 +141,9 @@ export default {
 }
 
 .bb:hover{
-      -moz-box-shadow: 0 0 0 white;
-    -webkit-box-shadow: 0 0 0 white;
-    box-shadow: 0 0 0 white;
+  -moz-box-shadow: 0 0 0 white;
+  -webkit-box-shadow: 0 0 0 white;
+  box-shadow: 0 0 0 white;
 }
 
 .bb > .desc{
@@ -183,7 +187,7 @@ div.title{
   margin-left:15px;
 }
 
-p{
+.gallery p{
   color:white;
 }
 

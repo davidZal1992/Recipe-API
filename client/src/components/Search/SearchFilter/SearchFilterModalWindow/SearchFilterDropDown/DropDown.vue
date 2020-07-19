@@ -24,7 +24,6 @@
     mounted: function(){
         if(this.oldselect!==null)
         this.selected=this.oldselect
-        console.log(this.options)
     }
   }
 </script>

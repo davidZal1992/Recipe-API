@@ -1,22 +1,22 @@
 <template>
-  <div>
+  <div class="recipage">
     <div class="left">
-    <div class="myrecipetitle"><h1>Your Personally Recipes</h1></div>
-    <img class="img" src="../assets/profile.jpg" alt="Avatar">
-    <div class="wrap">
-    <div >
-            <button class="profbtn">My Favorite Recipe<router-link to="/register"></router-link></button>
-    </div>
-    <div>
-            <button class="profbtn">My Family  Recipe<router-link to="/register"></router-link></button>
-    </div>
-    </div>
+        <div class="myrecipetitle"><h1>Your Personally Recipes</h1></div>
+        <img class="img" :src=$root.store.profilePicture />
+        <div class="wrap">
+            <div >
+                <router-link to="/myfavorite"><GreenButton type="My Favorite Recipe"/></router-link>
+            </div>
+            <div>
+                <router-link to="/myfamily"><GreenButton type="My Family Recipe"/></router-link>
+            </div>
+        </div>
     </div>
    <div class="right">
        <div class="results">
         <div class="results" v-if="this.myRecipes.length!==0">
         <span v-for="recipe in this.myRecipes" :key="recipe.id" class="recipes">
-              <Result :recipe="recipe" :class="{userecipesummery:true}" />
+                <router-link :to="{ name: 'recipe', params: {type:recipe.type,id: recipe.id}}"><Result :recipe="recipe" :class="{userecipesummery:true}" /></router-link>
         </span>
         </div>
         <div v-else>
@@ -31,6 +31,7 @@
 <script>
 import Result from '../components/Search/SearchResult/SearchResult'
 import NoResults from '../components/NoResults/NoResults'
+import GreenButton from '../components/GreenButton/GreenButton'
 export default {
     name: 'MyPrivate',
     data() {
@@ -40,7 +41,8 @@ export default {
     },
     components:{
         Result,
-        NoResults
+        NoResults,
+        GreenButton
     },
     mounted() {
     this.getProfileRecipe();
@@ -51,15 +53,19 @@ export default {
            try{
             this.myRecipes=[]
             const response = await this.axios.get("https://david-matan-recipe-api-server.herokuapp.com/api/recipes",{withCredentials: true})
-            this.myRecipes=response.data.recipes;
-            console.log(this.myRecipes)
+            this.myRecipes=response.data.preview;
            }
            catch(err)
            {
-             if(err.response.status==='401'){
-                 this.$root.store.username=undefined
-               this.$router.push('/search')
+             if(err.response.status===404){
+               this.myRecipes=[]   
              }
+
+             if(err.response.status===401){
+               this.$root.store.username=undefined
+               this.$router.push('/login')
+             }
+             console.clear()
            }
         }
     }
@@ -67,10 +73,14 @@ export default {
 }
 </script>
 
-<style>
+<style >
+
+.recipage{
+    display: flex;
+}
 .left{
     width: 25%;
-    float: left;
+    float:left;
     background: url('../assets/black-background.jpg') ;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -84,32 +94,22 @@ export default {
 }
 .right{
     width:75%;
-    float:left;
-
+    float: left;
 }
+
 .img {
-    margin-left:10%;
     margin-top:10%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 50%;
     width: 200px;
     height: 250px;
     border:2px solid white;
 }
 
-.profbtn{
-    margin-bottom: 1rem;
-    width: 150px;
-    height: 45px;
-    border:1px solid white;
-    color:white;
-    background:rgb(59, 189, 59);
-    border-radius: 5px;
-    font-family: 'Fjalla One', sans-serif;
-    outline: none;
-}
 .wrap{
-    margin-top:2rem;
-    margin-left:2rem
+     margin-top:1rem;
 }
 
 .myrecipetitle{
