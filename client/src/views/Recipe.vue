@@ -41,7 +41,7 @@ export default {
               this.$root.store.username=undefined
               this.$router.push({ name: 'login', query: { redirect: path } })
              }
-            if(err.response.data.message==='Request failed with status code 404'){
+            if(err.response.status===404||err.response.status===500){
               this.$router.push({ name: 'NoFound', query: { redirect: path } })
              }
 

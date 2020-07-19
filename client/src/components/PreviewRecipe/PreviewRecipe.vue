@@ -31,7 +31,7 @@
                 </div>
                 <div class='icon-p'>
                 <img style="width:20px; margin-left:17px" src="../../assets/bread.png" alt="bread"/>
-                    <span v-if="recipe.glutenFree"><img style="width:20px; margin-bottom:3px; margin-left:13px" src="../../assets/V.png"/></span>
+                    <span v-if="!recipe.glutenFree"><img style="width:20px; margin-bottom:3px; margin-left:13px" src="../../assets/V.png"/></span>
                     <span v-else><img style="width:20px; margin-bottom:3px; margin-left:13px" src="../../assets/x.png"/></span>
                 </div>
             </div>

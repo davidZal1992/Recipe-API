@@ -13,9 +13,11 @@ export default {
 <style>
 .nofound-wrapper{
     background-color: white;
-    height: 91.5vh;
+    height: 93.5vh;
+    
 }
 .nofound{
     height: 550px;
+    margin:auto;
 }
 </style>
