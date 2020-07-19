@@ -53,6 +53,7 @@ export default {
            try{
             const response = await this.axios.get("https://david-matan-recipe-api-server.herokuapp.com/api/profiles/myprofile")
             let myFavoritedIds=response.data.favoriteRecipe;
+            if(myFavoritedIds){
             this.myFavoriteRecipes= await Promise.all(myFavoritedIds.map(async (recipeInfo) =>{
                 if(recipeInfo.type==="spooncalur"){
                     let result = await this.axios.get("https://david-matan-recipe-api-server.herokuapp.com/api/recipes/"+recipeInfo.id)
@@ -71,14 +72,17 @@ export default {
                         }       
              }
             ))
+            }
            }
            catch(err)
            {
+               console.log(err)
              if(err.response.status===401){
                  this.$root.store.username=undefined
                  this.$router.push('/login')
              }
             console.log(err.response)
+            console
            }
            
         }
