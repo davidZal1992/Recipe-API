@@ -35,6 +35,13 @@ export default {
     display:flex;
 }
 
+.result:hover{
+  -moz-box-shadow: 0 0 10px white;
+  -webkit-box-shadow: 0 0 10px white;
+  box-shadow: 0 0 10px white;
+  cursor: pointer;
+}
+
 .userecipesummery{
     height:100%;
     width:80%;
