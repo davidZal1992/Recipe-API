@@ -43,9 +43,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 This project is done as part of course project - This is REST API for create , share , search recipes and get recipes over the all cousins in the world.
 The project made by David Zaltsman & Matan Gadasi using Node.js for server side and Vue.js for client side
-
-David Zaltsman : 203382551
 Email: davidzal1992@gmail.com
 
-Matan Gadasi: 203194063
 Email: matan230g@gmail.com
